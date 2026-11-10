@@ -18,3 +18,7 @@ This appears to be an early or lightweight project. The next improvement should 
 - Document the data model and main user actions.
 - Add exact local setup/run instructions.
 - Rename the default branch from `master` to `main` in GitHub repository settings if you want modern branch naming.
+
+API keys are read from the `ETHERSCAN_API_KEY` and `POLYGONSCAN_API_KEY` environment variables.
+Set them in your environment before starting the app; `.env.example` lists the required names.
+A missing key returns a clear error when requesting transactions for that network.

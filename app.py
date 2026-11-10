@@ -1,11 +1,12 @@
-from flask import Flask, render_template, request
+from flask import Flask, abort, render_template, request
+import os
 import requests
 
 app = Flask(__name__)
 
-# Replace with your own API keys
-etherscan_api_key = "FD9EINWQSNZJ6MT59SKZ6U3BHJNXD2TR48"
-polygonscan_api_key = "SS6EQC3YBPDQHE2443B63BHXJJ1HY2AQGY"
+# API keys from the environment
+etherscan_api_key = os.environ.get("ETHERSCAN_API_KEY")
+polygonscan_api_key = os.environ.get("POLYGONSCAN_API_KEY")
 
 # Etherscan and PolygonScan API endpoints
 etherscan_base_url = "https://api.etherscan.io/api"
@@ -24,6 +25,10 @@ def get_wallet_transactions(address, network):
         api_endpoint = polygonscan_base_url
     else:
         return []
+
+    if not api_key:
+        key_name = "ETHERSCAN_API_KEY" if network == "ethereum" else "POLYGONSCAN_API_KEY"
+        abort(503, description=f"Missing required environment variable: {key_name}")
 
     params = {
         "module": "account",
